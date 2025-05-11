@@ -8,6 +8,8 @@ public class ball_throw : MonoBehaviour
     
     [SerializeField] private GameObject ballPrefab;
     
+    private GameObject ball;
+    
     [SerializeField] private float throw_force;
     // Start is called before the first frame update
     void Start()
@@ -20,13 +22,20 @@ public class ball_throw : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
+            ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
             
             Rigidbody rb = ball.GetComponent<Rigidbody>();
             
             rb.AddForce(-transform.forward * throw_force, ForceMode.Impulse);
             
             Destroy(ball, 5f);
+            
+            
         }
+    }
+
+    public GameObject GetBall()
+    {
+        return ball;
     }
 }
