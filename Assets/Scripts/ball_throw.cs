@@ -15,6 +15,10 @@ public class ball_throw : MonoBehaviour
     // Start is called before the first frame update
     
     public static Action<GameObject> OnBallSpawned;
+    public static Action AllBallsDestroyed;
+    
+    // list to check ball count
+    //private List<GameObject> ball_count = new List<GameObject>();
     void Start()
     {
         
@@ -27,9 +31,25 @@ public class ball_throw : MonoBehaviour
         {
             ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
             
+            // add new ball to list
+            //ball_count.Add(ball);
+            
             // call delegate when new ball spawns
             Debug.Log("OnBallSpawned Invoked !!");
             OnBallSpawned?.Invoke(ball);
+
+            ball.AddComponent<ball_destroy_watcher>().Init(() =>
+            {
+                //ball_count.Remove(ball);
+                
+                AllBallsDestroyed?.Invoke();
+
+                /*if (ball_count.Count == 0)
+                {
+                    Debug.Log("OnBallDestroyed Invoked !!");
+                    AllBallsDestroyed?.Invoke();
+                }*/
+            });
             
             Rigidbody rb = ball.GetComponent<Rigidbody>();
             

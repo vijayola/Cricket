@@ -14,17 +14,33 @@ public class look_at_ball : MonoBehaviour
     void OnEnable()
     {
         ball_throw.OnBallSpawned += Look_at_Ball_constraint;
+        ball_throw.AllBallsDestroyed += Clear_Rig;
     }
+    
     void Start()
     {
         multiAimConstraint = GetComponent<MultiAimConstraint>();
         rigBuilder = GetComponentInParent<RigBuilder>();
     }
 
+    void Clear_Rig()
+    {
+        if (multiAimConstraint != null)
+        {
+            Debug.Log("Clearing constraint because ball was destroyed.");
+            multiAimConstraint.data.sourceObjects = new WeightedTransformArray(); // clear it
+        }
+        if (rigBuilder != null)
+        {
+            rigBuilder.Build(); // Optional but can help refresh constraints
+        }
+        
+    }
+
     void Look_at_Ball_constraint(GameObject ball)
     {
         Debug.Log("Look_at_Ball_constraint called !!");
-        if (ball != null && multiAimConstraint != null)
+        if (ball != null && ball.transform != null && multiAimConstraint != null)
         {
             var sources = multiAimConstraint.data.sourceObjects;
             sources.Clear();
