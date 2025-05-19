@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class ball_throw : MonoBehaviour
     
     [SerializeField] private float throw_force;
     // Start is called before the first frame update
+    
+    public static Action<GameObject> OnBallSpawned;
     void Start()
     {
         
@@ -24,13 +27,15 @@ public class ball_throw : MonoBehaviour
         {
             ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
             
+            // call delegate when new ball spawns
+            Debug.Log("OnBallSpawned Invoked !!");
+            OnBallSpawned?.Invoke(ball);
+            
             Rigidbody rb = ball.GetComponent<Rigidbody>();
             
             rb.AddForce(-transform.forward * throw_force, ForceMode.Impulse);
             
             Destroy(ball, 5f);
-            
-            
         }
     }
 

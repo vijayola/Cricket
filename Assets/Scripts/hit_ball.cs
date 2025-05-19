@@ -40,8 +40,11 @@ public class hit_ball : MonoBehaviour
             
             // get current thrown ball from "ball_throw" script
             GameObject ball = ball_throw.GetBall();
-            
-            ball.GetComponent<Rigidbody>().AddForce(worldDirection * forceMagnitude, ForceMode.Impulse);
+
+            if (ball != null)
+            {
+                ball.GetComponent<Rigidbody>().AddForce(worldDirection * forceMagnitude, ForceMode.Impulse);
+            }
         }
         
     }
